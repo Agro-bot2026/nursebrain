@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c0a1a"><title>NurseBrain — Crear cuenta</title>
+{% include '_auth_base.html' %}
+</head><body>
+<canvas id="lluvia"></canvas><span class="orb orb1"></span><span class="orb orb2"></span>
+<form class="card" method="POST" action="/registro">
+<div class="marca">Nurse<span class="g">Brain</span></div><div class="sub">Creá tu cuenta gratis</div>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+{% if ok %}<div class="ok">{{ ok }}</div>{% endif %}
+<div class="campo"><label>Nombre</label><input type="text" name="nombre"></div>
+<div class="campo"><label>Email</label><input type="email" name="email" required></div>
+<div class="campo"><label>Contraseña</label><input type="password" name="password" required></div>
+<button class="btn" type="submit">Crear cuenta</button>
+<div class="links"><a href="/login">Ya tengo cuenta</a></div>
+</form></body></html>

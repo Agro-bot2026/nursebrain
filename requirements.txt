@@ -1,0 +1,23 @@
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9
+jinja2==3.1.4
+python-dotenv==1.0.1
+sqlalchemy==2.0.30
+
+# RAG local
+chromadb==0.5.3
+sentence-transformers==3.0.1
+pypdf==4.2.0
+
+# Vertex AI (OCR + TTS)
+google-cloud-documentai==2.29.2
+google-cloud-texttospeech==2.16.4
+google-auth==2.30.0
+
+# DeepSeek (usa cliente compatible OpenAI)
+openai==1.35.3
+
+# Utilidades
+pydantic==2.7.4
+aiofiles==23.2.1

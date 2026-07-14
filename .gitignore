@@ -1,0 +1,31 @@
+# Secretos - NUNCA subir
+.env
+secrets/
+*.key
+*.pem
+vertex-key.json
+
+# Bases de datos y datos de usuarios
+*.db
+*.db-journal
+nursebrain.db
+nursebrain_vieja.db
+
+# ChromaDB (embeddings)
+chroma_data/
+
+# PDFs y archivos subidos
+uploads/
+paginas_libro_*/
+nanda_paginas/
+
+# Logs y temporales
+*.log
+__pycache__/
+*.pyc
+venv/
+proc_libro_*.log
+ocr_progreso.log
+
+# Backups
+backup_*.tar.gz

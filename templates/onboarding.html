@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0c0a1a">
+<title>NurseBrain AI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#0c0a1a}
+.slider{display:flex;height:100vh;width:400vw;transition:transform .4s cubic-bezier(.25,.46,.45,.94)}
+.slide{width:100vw;height:100vh;position:relative;overflow:hidden;flex-shrink:0}
+.slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.slide::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(8,6,20,.85) 80%)}
+.dots{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:20}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);transition:all .3s}
+.dot.activo{background:#a78bfa;width:24px;border-radius:4px}
+.btn-empezar{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#818cf8,#a78bfa,#4ade80);color:#0a081a;font-weight:800;font-size:17px;border:none;border-radius:999px;padding:16px 48px;cursor:pointer;z-index:20;box-shadow:0 8px 26px rgba(129,140,248,.5);opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap}
+.btn-empezar.visible{opacity:1;pointer-events:auto}
+.hint-swipe{position:fixed;bottom:36px;right:28px;z-index:20;color:rgba(255,255,255,.55);font-size:13px;display:flex;align-items:center;gap:6px;transition:opacity .3s}
+.hint-swipe.oculta{opacity:0;pointer-events:none}
+.hint-arrow{font-size:20px;animation:mover 1.2s infinite}
+@keyframes mover{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div class="slider" id="slider">
+  <div class="slide"><img src="/static/img/onboarding-1.jpg" alt="Bienvenida" loading="eager"></div>
+  <div class="slide"><img src="/static/img/onboarding-2.jpg" alt="Cargar material" loading="lazy"></div>
+  <div class="slide"><img src="/static/img/onboarding-3.jpg" alt="Estudiar" loading="lazy"></div>
+  <div class="slide"><img src="/static/img/onboarding-4.jpg" alt="Generar material" loading="lazy"></div>
+</div>
+<div class="dots" id="dots">
+  <span class="dot activo"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+</div>
+<div class="hint-swipe" id="hint"><span>Deslizá</span><span class="hint-arrow">›</span></div>
+<button class="btn-empezar" id="btnEmpezar" onclick="irAlLogin()">Empezar →</button>
+<script>
+const slider=document.getElementById("slider");
+const dots=document.querySelectorAll(".dot");
+const btnEmpezar=document.getElementById("btnEmpezar");
+const hint=document.getElementById("hint");
+const TOTAL=4;
+let actual=0,startX=0,dragging=false;
+function irA(n){if(n<0)n=0;if(n>=TOTAL)n=TOTAL-1;actual=n;slider.style.transform=`translateX(-${actual*100}vw)`;dots.forEach((d,i)=>d.classList.toggle("activo",i===actual));const esUltima=actual===TOTAL-1;btnEmpezar.classList.toggle("visible",esUltima);hint.classList.toggle("oculta",esUltima)}
+function irAlLogin(){localStorage.setItem("nb_onboarding_visto","1");window.location.href="/login"}
+slider.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;dragging=true},{passive:true});
+slider.addEventListener("touchend",e=>{if(!dragging)return;dragging=false;const diff=startX-e.changedTouches[0].clientX;if(Math.abs(diff)>50)irA(diff>0?actual+1:actual-1)});
+dots.forEach((d,i)=>d.addEventListener("click",()=>irA(i)));
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")irA(actual+1);if(e.key==="ArrowLeft")irA(actual-1)});
+setTimeout(()=>{[2,3,4].forEach(n=>{const img=new Image();img.src=`/static/img/onboarding-${n}.jpg`})},500);
+</script>
+</body>
+</html>

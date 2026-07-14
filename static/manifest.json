@@ -1,0 +1,24 @@
+{
+  "name": "NurseBrain AI",
+  "short_name": "NurseBrain",
+  "description": "Tu copiloto de estudio para enfermeria",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0a1a",
+  "theme_color": "#0c0a1a",
+  "icons": [
+    {
+      "src": "https://nursebrain.charly-tricks.dev/static/img/icono-login.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://nursebrain.charly-tricks.dev/static/img/icono-login.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

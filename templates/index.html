@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c0a1a">
+<title>NurseBrain AI</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" href="https://nursebrain.charly-tricks.dev/static/img/icono-login.jpg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NurseBrain">
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span>
+</div>
+
+<div class="app-shell">
+
+  <nav class="sidenav">
+    <div class="sidenav-brand">
+      <span class="brand-mark">+</span>
+      <div class="brand-txt"><span class="brand-name">NurseBrain</span><span class="brand-sub">Copiloto clinico</span></div>
+    </div>
+    <button class="nav-btn activo" data-view="inicio"><span class="nav-ico">&#9750;</span><span class="nav-lbl">Inicio</span></button>
+    <button class="nav-btn" data-view="fuentes"><span class="nav-ico">&#9638;</span><span class="nav-lbl">Fuentes</span></button>
+    <button class="nav-btn" data-view="chat"><span class="nav-ico">&#128172;</span><span class="nav-lbl">Chat</span></button>
+    <button class="nav-btn" data-view="biblioteca"><span class="nav-ico">&#128218;</span><span class="nav-lbl">Biblioteca</span></button>
+    <button class="nav-btn" data-view="studio"><span class="nav-ico">&#10022;</span><span class="nav-lbl">Studio</span></button>
+  </nav>
+
+  <main class="main-area">
+
+    <header class="topbar">
+      <div class="brand brand-mobile">
+        <span class="brand-mark">+</span><span class="brand-name">NurseBrain</span>
+      </div>
+      <button id="materia-chip" class="materia-chip" title="Materia activa">&#9873; General</button>
+  <button id="cuenta-btn" class="materia-chip" title="Mi cuenta" style="margin-left:8px">&#9881;</button>
+    </header>
+
+    <section id="view-inicio" class="view">
+      <div class="hero">
+        <h1>Hola, soy tu <span class="grad">copiloto de estudio</span></h1>
+        <p>Cargá tu material una vez y después preguntame, tomá exámenes o generá resúmenes. Todo lo que te respondo sale de <b>tus propios apuntes</b>, no de información inventada.</p>
+      </div>
+      <div class="home-cards">
+        <button class="home-card hc-fuentes" data-goto="fuentes">
+          <span class="hc-ico">&#9638;</span>
+          <span class="hc-title">Fuentes</span>
+          <span class="hc-desc">Subí PDFs, fotos de apuntes, audios, videos de YouTube o páginas web. NurseBrain los lee y los guarda como su memoria.</span>
+          <span class="hc-go">Empezar acá &rarr;</span>
+        </button>
+        <button class="home-card hc-chat" data-goto="chat">
+          <span class="hc-ico">&#128172;</span>
+          <span class="hc-title">Chat tutor</span>
+          <span class="hc-desc">Preguntale lo que quieras sobre tu material. Te responde con tu bibliografía y te dice de dónde sacó la respuesta.</span>
+          <span class="hc-go">Ir al chat &rarr;</span>
+        </button>
+        <button class="home-card hc-studio" data-goto="studio">
+          <span class="hc-ico">&#10022;</span>
+          <span class="hc-title">Studio</span>
+          <span class="hc-desc">Generá cuestionarios, resúmenes en audio, tarjetas de estudio, el PAE y tu glosario, todo a partir de lo que subiste.</span>
+          <span class="hc-go">Crear material &rarr;</span>
+        </button>
+      </div>
+      <div class="paso-a-paso">
+        <h3>¿Cómo se usa?</h3>
+        <ol>
+          <li><b>Subí tu material</b> en la sección Fuentes (aunque sea un solo PDF para empezar).</li>
+          <li><b>Preguntá en el Chat</b> o <b>generá material</b> en el Studio.</li>
+          <li>Cuanto más subas, más completo se vuelve tu copiloto.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="view-fuentes" class="view oculta">
+      <div class="view-head"><h1>Fuentes</h1></div>
+      <div class="explica">
+        <span class="ex-ico">&#9638;</span>
+        <p><b>¿Qué es esto?</b> Es la biblioteca de tu copiloto. Todo lo que cargues acá (apuntes, libros, fotos, audios, videos) se convierte en la base con la que después te responde y arma tu material de estudio.</p>
+      </div>
+      <div id="lista-fuentes" class="lista-fuentes">
+        <div class="empty">Todavía no cargaste nada.<br>Tocá <b>+ Añadir fuente</b> para empezar.</div>
+      </div>
+    </section>
+
+    <section id="view-chat" class="view oculta">
+      <div class="view-head"><h1>Chat tutor</h1></div>
+      <div class="explica">
+        <span class="ex-ico">&#128172;</span>
+        <p><b>¿Qué es esto?</b> Un tutor que responde <b>solo con tu material</b>. Preguntale una duda, pedile que te explique un tema fácil o que te tome una pregunta. Si no está en tus fuentes, te lo dice en vez de inventar.</p>
+      </div>
+      <div id="chat-log" class="chat-log"></div>
+      <div class="chips-sugeridos" id="chips-sugeridos">
+        <button class="chip">Resumime lo más importante</button>
+        <button class="chip">Tomame una pregunta</button>
+        <button class="chip">Explicá esto fácil</button>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" id="input-pregunta" placeholder="Escribí tu pregunta..." autocomplete="off">
+        <button id="btn-enviar" class="btn-enviar" aria-label="Enviar">&#10148;</button>
+      </div>
+    </section>
+
+    
+    <section id="view-biblioteca" class="view oculta">
+      <div class="view-head"><h1>Biblioteca</h1></div>
+      <p style="color:var(--txt-dim);font-size:13px;margin-bottom:16px">Libros disponibles para todas las estudiantes. Activá los que quieras usar en el chat.</p>
+      <div id="admin-subir-zona" style="display:none;margin-bottom:16px">
+        <button id="btn-abrir-subir" class="btn-lib btn-lib-off" onclick="toggleFormSubir()">+ Subir libro (admin)</button>
+        <div id="form-subir" style="display:none;margin-top:12px;padding:14px;background:rgba(255,255,255,0.04);border-radius:12px">
+          <input id="sub-titulo" type="text" placeholder="Título del libro" style="width:100%;margin-bottom:8px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.2);color:#fff;box-sizing:border-box">
+          <input id="sub-materia" type="text" placeholder="Materia (ej: Diagnósticos de Enfermería)" style="width:100%;margin-bottom:8px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.2);color:#fff;box-sizing:border-box">
+          <textarea id="sub-desc" placeholder="Descripción (opcional)" rows="2" style="width:100%;margin-bottom:8px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.2);color:#fff;box-sizing:border-box"></textarea>
+          <input id="sub-archivo" type="file" accept="application/pdf" style="width:100%;margin-bottom:10px;color:var(--txt-dim)">
+          <button id="btn-enviar-libro" class="btn-lib btn-lib-on" onclick="enviarLibro()" style="width:100%">Subir y procesar</button>
+        </div>
+      </div>
+      <div id="biblioteca-lista"></div>
+    </section>
+
+    <section id="view-studio" class="view oculta">
+      <div class="view-head"><h1>Studio</h1></div>
+      <div class="explica">
+        <span class="ex-ico">&#10022;</span>
+        <p><b>¿Qué es esto?</b> Tu fábrica de material de estudio. Escribí un tema, elegí qué querés generar, y NurseBrain lo arma automáticamente usando tus fuentes.</p>
+      </div>
+      <input type="text" id="studio-tema" class="studio-tema" placeholder="Escribí un tema (ej: insulina, RCP, signos vitales...)">
+      <div class="studio-grid">
+        <button class="studio-card c-lila" data-accion="audio">
+          <span class="sc-ico">&#9835;</span>
+          <span class="sc-body"><span class="sc-txt">Resumen de audio</span><span class="sc-desc">Un mini-podcast del tema para escuchar de camino.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+        <button class="studio-card c-celeste" data-accion="examen">
+          <span class="sc-ico">?</span>
+          <span class="sc-body"><span class="sc-txt">Cuestionario</span><span class="sc-desc">Preguntas tipo examen con opción múltiple y respuesta.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+        <button class="studio-card c-rosa" data-accion="flashcards">
+          <span class="sc-ico">&#9635;</span>
+          <span class="sc-body"><span class="sc-txt">Tarjetas didácticas</span><span class="sc-desc">Flashcards pregunta/respuesta para repasar rápido.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+        <button class="studio-card c-menta" data-accion="resumen">
+          <span class="sc-ico">&#8801;</span>
+          <span class="sc-body"><span class="sc-txt">Resumen escrito</span><span class="sc-desc">Un resumen ordenado del tema para repasar antes del parcial.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+        <button class="studio-card c-dorado" data-accion="pae">
+          <span class="sc-ico">+</span>
+          <span class="sc-body"><span class="sc-txt">Asistente PAE</span><span class="sc-desc">Pegá un caso clínico y sugiere NANDA, NIC y NOC.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+        <button class="studio-card c-violeta" data-accion="glosario">
+          <span class="sc-ico">Aa</span>
+          <span class="sc-body"><span class="sc-txt">Glosario</span><span class="sc-desc">Los términos médicos nuevos que aparecen en tu material.</span></span>
+          <span class="sc-arrow">&rsaquo;</span>
+        </button>
+      </div>
+      <div id="studio-salida" class="studio-salida"></div>
+    </section>
+
+  </main>
+</div>
+
+<button id="fab-fuente" class="fab">+ Añadir fuente</button>
+
+<div id="modal-fuente" class="modal-overlay oculta">
+  <div class="modal-sheet">
+    <button id="modal-cerrar" class="modal-cerrar" aria-label="Cerrar">&#10005;</button>
+    <h2 class="modal-titulo">Añadí una fuente <span class="grad">a tu cerebro</span></h2>
+    <p class="modal-ayuda">Elegí de dónde sale el material. NurseBrain lo lee y lo suma a tu biblioteca.</p>
+
+    <div class="modal-materia">
+      <label>Materia (para ordenar tu material)</label>
+      <input type="text" id="modal-materia-input" placeholder="ej: Farmacología" value="General">
+    </div>
+
+    <div class="fuente-tipos">
+      <button class="fuente-tipo" data-tipo="pdf"><span class="ft-ico">&#9638;</span><span><b>PDF</b><small>Libros, guías, apuntes en PDF</small></span></button>
+      <button class="fuente-tipo" data-tipo="imagen"><span class="ft-ico">&#9635;</span><span><b>Imagen</b><small>Foto de un apunte o pizarrón</small></span></button>
+      <button class="fuente-tipo" data-tipo="audio"><span class="ft-ico">&#9835;</span><span><b>Audio</b><small>Grabación corta de una clase</small></span></button>
+      <button class="fuente-tipo" data-tipo="web"><span class="ft-ico">&#9673;</span><span><b>Sitio web</b><small>Una página con info</small></span></button>
+      <button class="fuente-tipo" data-tipo="youtube"><span class="ft-ico">&#9654;</span><span><b>YouTube</b><small>Un video con subtítulos</small></span></button>
+      <button class="fuente-tipo" data-tipo="texto"><span class="ft-ico">&#9998;</span><span><b>Texto copiado</b><small>Pegás texto directamente</small></span></button>
+    </div>
+
+    <input type="file" id="file-pdf" accept=".pdf" hidden>
+    <input type="file" id="file-imagen" accept="image/*" hidden>
+    <input type="file" id="file-audio" accept="audio/*" hidden>
+
+    <div id="panel-url" class="panel-url oculta">
+      <input type="text" id="input-url" placeholder="Pegá el enlace...">
+      <button id="btn-url-enviar" class="btn-modal">Añadir</button>
+    </div>
+
+    <div id="panel-texto" class="panel-texto oculta">
+      <input type="text" id="input-texto-titulo" placeholder="Título (ej: Apunte de clase)">
+      <textarea id="input-texto-cuerpo" placeholder="Pegá el texto acá..." rows="6"></textarea>
+      <button id="btn-texto-enviar" class="btn-modal">Añadir</button>
+    </div>
+
+    <div id="modal-estado" class="modal-estado"></div>
+  </div>
+</div>
+
+
+<div id="modal-cuenta" class="modal-overlay oculta">
+  <div class="modal-sheet">
+    <button id="cuenta-cerrar" class="modal-cerrar">&#10005;</button>
+    <h2 class="modal-titulo">Mi cuenta</h2>
+    <a href="/logout" class="btn-modal" style="display:block;text-align:center;text-decoration:none;margin-bottom:12px">Cerrar sesión</a>
+    <button id="btn-borrar-cuenta" class="btn-modal" style="background:#ef4444;width:100%">Borrar mi cuenta</button>
+    <p style="color:var(--txt-dim);font-size:12px;margin-top:12px;text-align:center">
+      Borrar tu cuenta elimina todos tus documentos, chats y glosario. No se puede deshacer.
+    </p>
+  </div>
+</div>
+
+<div id="toast" class="toast oculta"></div>
+<script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+<script src="/static/app.js"></script>
+<script src="/static/cast.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/static/sw.js").catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
