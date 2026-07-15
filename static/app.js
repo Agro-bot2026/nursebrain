@@ -132,6 +132,7 @@ async function cargarBiblioteca() {
           <div class="fuente-meta">${l.materia}</div>
           ${l.descripcion ? `<div class="fuente-meta" style="margin-top:4px">${l.descripcion}</div>` : ""}
           ${accion}
+          ${window._esAdmin && !procesando ? `<button class="btn-eliminar-libro" onclick="eliminarLibro(${l.id}, '${l.titulo.replace(/'/g, "")}')">🗑 Eliminar</button>` : ""}
         </div>
       </div>`;
     }).join("");
@@ -167,9 +168,13 @@ async function verificarAdmin() {
   try {
     const res = await fetch("/api/biblioteca/yo");
     const data = await res.json();
+    window._esAdmin = !!data.es_admin;
     if (data.es_admin) {
       const zona = document.getElementById("admin-subir-zona");
       if (zona) zona.style.display = "block";
+      // Re-renderizar la lista para que aparezcan los botones de eliminar
+      const cards = document.querySelectorAll(".btn-eliminar-libro");
+      if (!cards.length) cargarBiblioteca();
     }
   } catch(e) {}
 }
@@ -242,5 +247,23 @@ async function actualizarProgresos(ids) {
   } else if (siguen.length) {
     clearTimeout(window._bibliotecaTimer);
     window._bibliotecaTimer = setTimeout(() => actualizarProgresos(siguen), 3000);
+  }
+}
+
+// Eliminar libro de la biblioteca (solo admin, con confirmación)
+async function eliminarLibro(id, titulo) {
+  const ok = confirm(`¿Seguro que querés eliminar "${titulo}"?\n\nEsto borra el libro de la biblioteca para todas las usuarias y no se puede deshacer.`);
+  if (!ok) return;
+  try {
+    const res = await fetch(`/api/biblioteca/admin/${id}`, {method: "DELETE"});
+    const data = await res.json();
+    if (data.ok) {
+      toast("Libro eliminado de la biblioteca");
+      await cargarBiblioteca();
+    } else {
+      toast(data.detail || "No se pudo eliminar");
+    }
+  } catch(e) {
+    toast("Error al eliminar el libro");
   }
 }
